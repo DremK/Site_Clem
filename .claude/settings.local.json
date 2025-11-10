@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(dir:*)",
+      "Bash(start index.html)",
+      "Bash(start booking.html)",
+      "Bash(start admin.html)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

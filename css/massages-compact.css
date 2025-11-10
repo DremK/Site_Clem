@@ -1,0 +1,225 @@
+/* ========================================
+   SECTION MASSAGES - GRID 4 COLONNES
+   ======================================== */
+.massages-section-compact {
+    background: linear-gradient(135deg, rgba(42, 157, 143, 0.03), rgba(38, 70, 83, 0.03));
+    padding: var(--spacing-xl) 0;
+}
+
+/* Grid Container */
+.massages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Massage Card */
+.massage-card {
+    position: relative;
+    background: var(--color-white);
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.massage-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+/* Badge */
+.massage-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 1;
+}
+
+.massage-badge.popular {
+    background: linear-gradient(135deg, #FF6B9D, #ff8bb0);
+    color: var(--color-white);
+    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+.massage-badge.signature {
+    background: linear-gradient(135deg, #e9c46a, #f4d481);
+    color: #5a4a1f;
+    box-shadow: 0 2px 8px rgba(233, 196, 106, 0.3);
+}
+
+/* Icon */
+.massage-card-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    color: var(--color-white);
+    margin-bottom: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.massage-card:hover .massage-card-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Title */
+.massage-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-secondary);
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+}
+
+/* Description */
+.massage-card-description {
+    color: var(--color-text-medium);
+    margin: 0 0 1.25rem 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    flex-grow: 1;
+}
+
+/* Meta (Duration + Price) */
+.massage-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(42, 157, 143, 0.1);
+}
+
+.massage-duration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+}
+
+.massage-duration i {
+    color: var(--color-primary);
+}
+
+.massage-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+}
+
+/* Button */
+.btn-reserve {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-reserve:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #33b0a0, #2f7a88);
+}
+
+/* Responsive - Tablette */
+@media (max-width: 1024px) {
+    .massages-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .massages-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        max-width: 500px;
+    }
+
+    .massage-card {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .massage-card-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .massage-card-title {
+        font-size: 1.35rem;
+    }
+
+    .massage-price {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .massages-section-compact {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .massages-grid {
+        gap: 1rem;
+    }
+
+    .massage-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .massage-card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.75rem;
+    }
+
+    .massage-card-title {
+        font-size: 1.2rem;
+    }
+
+    .massage-card-description {
+        font-size: 0.9rem;
+    }
+
+    .massage-price {
+        font-size: 1.5rem;
+    }
+
+    .btn-reserve {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}

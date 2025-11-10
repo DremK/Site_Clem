@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisualisation des Emails - Les mains de Clem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .email-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .email-type-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .email-type-card:hover {
+            transform: translateY(-5px);
+            border-color: #4facfe;
+        }
+
+        .email-type-card.active {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .email-type-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .email-type-card p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .email-type-card .icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #4facfe;
+        }
+
+        .preview-section {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .preview-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .code-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .code-header h3 {
+            color: #e2e8f0;
+            margin: 0;
+        }
+
+        .subject-editor {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .subject-editor label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .subject-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #4facfe;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3a9bf7;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .email-preview {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .email-editor {
+            background: white;
+            border: 2px solid #4facfe;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .editor-header h3 {
+            color: #2c3e50;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+        }
+
+        .variables {
+            background: #e8f4fd;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .variables h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .variable-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .variable-item {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 3px;
+            border: 1px solid #dee2e6;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .test-data {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .test-data h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .email-meta {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .email-meta div {
+            margin-bottom: 5px;
+        }
+
+        .email-meta strong {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Prévisualisation des Emails</h1>
+            <p>Visualisez et modifiez le contenu de tous les emails automatiques</p>
+        </div>
+
+        <div class="email-types">
+            <div class="email-type-card active" data-type="confirmation">
+                <div class="icon">✅</div>
+                <h3>Confirmation de Réservation</h3>
+                <p>Email envoyé automatiquement après une réservation client</p>
+                <small>Utilisé dans : booking.js</small>
+            </div>
+
+            <div class="email-type-card" data-type="status">
+                <div class="icon">📊</div>
+                <h3>Statut de Réservation</h3>
+                <p>Email envoyé par l'admin pour accepter/refuser une réservation</p>
+                <small>Utilisé dans : admin.js</small>
+            </div>
+
+            <div class="email-type-card" data-type="reschedule">
+                <div class="icon">🔄</div>
+                <h3>Modification de Créneau</h3>
+                <p>Email envoyé quand un créneau est modifié par l'admin</p>
+                <small>Utilisé dans : admin.js</small>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <div class="preview-header">
+                <h2 id="preview-title">Confirmation de Réservation</h2>
+                <div class="preview-actions">
+                    <button class="btn btn-secondary" onclick="toggleEditor()">
+                        <span>✏️</span> Modifier
+                    </button>
+                    <button class="btn btn-primary" onclick="testEmail()">
+                        <span>🚀</span> Tester l'Email
+                    </button>
+                    <button class="btn btn-success" onclick="copyToClipboard()">
+                        <span>📋</span> Copier
+                    </button>
+                    <button class="btn btn-info" onclick="generateCode()">
+                        <span>💻</span> Générer Code
+                    </button>
+                </div>
+            </div>
+
+            <div class="subject-editor">
+                <label for="subject-input">Sujet de l'email :</label>
+                <input type="text" id="subject-input" class="subject-input" value="[Les mains de Clem] Confirmation de votre réservation #123456">
+                <button class="btn btn-primary" onclick="updateSubject()" style="margin-top: 10px;">
+                    <span>💾</span> Mettre à jour le sujet
+                </button>
+            </div>
+
+            <div class="email-meta" id="email-meta">
+                <div><strong>Expéditeur :</strong> dremk34@gmail.com</div>
+                <div><strong>Sujet :</strong> [Les mains de Clem] Confirmation de votre réservation #123456</div>
+                <div><strong>Destinataire :</strong> client@example.com</div>
+            </div>
+
+            <div class="email-preview" id="email-preview">
+                <!-- Le contenu de l'email sera injecté ici -->
+            </div>
+
+            <div class="email-editor hidden" id="email-editor">
+                <div class="editor-header">
+                    <h3>Éditeur de Contenu</h3>
+                    <button class="btn btn-primary" onclick="saveChanges()">
+                        <span>💾</span> Sauvegarder
+                    </button>
+                </div>
+                <textarea id="email-content" placeholder="Modifiez le contenu de l'email ici..."></textarea>
+                
+                <div class="variables">
+                    <h4>Variables Disponibles :</h4>
+                    <div class="variable-list" id="variables-list">
+                        <!-- Les variables seront injectées ici -->
+                    </div>
+                </div>
+
+                <div class="test-data">
+                    <h4>Données de Test :</h4>
+                    <div id="test-data">
+                        <!-- Les données de test seront injectées ici -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de test pour la prévisualisation
+        const testBooking = {
+            id: 123456,
+            serviceName: "Massage Relaxant",
+            date: "2025-01-15",
+            time: "14:00-15:00",
+            duration: 60,
+            price: 55,
+            client: {
+                prenom: "Marie",
+                nom: "Dupont",
+                email: "marie.dupont@example.com",
+                telephone: "06 12 34 56 78",
+                adresse: "123 Avenue de la Plage, 97400 Saint-Denis"
+            }
+        };
+
+        // Templates d'email
+        const emailTemplates = {
+            confirmation: {
+                title: "Confirmation de Réservation",
+                subject: `[Les mains de Clem] Confirmation de votre réservation #${testBooking.id}`,
+                template: `Bonjour ${testBooking.client.prenom},
+
+Votre réservation a été enregistrée avec succès !
+
+📋 Détails de votre réservation :
+• Service : ${testBooking.serviceName}
+• Date : ${new Date(testBooking.date).toLocaleDateString('fr-FR')}
+• Heure : ${testBooking.time}
+• Durée : ${testBooking.duration} minutes
+• Prix : ${testBooking.price}€
+
+📍 Adresse :
+${testBooking.client.adresse}
+
+📞 Contact :
+${testBooking.client.telephone}
+
+Votre réservation est en attente de validation. 
+Vous recevrez une confirmation définitive dans les 24 heures.
+
+En cas de questions, n'hésitez pas à me contacter.
+
+Cordialement,
+Clément - Les mains de Clem
+dremk34@gmail.com`,
+                variables: [
+                    "${booking.client.prenom}",
+                    "${booking.serviceName}",
+                    "${booking.date}",
+                    "${booking.time}",
+                    "${booking.duration}",
+                    "${booking.price}",
+                    "${booking.client.adresse}",
+                    "${booking.client.telephone}",
+                    "${booking.id}"
+                ]
+            },
+            status: {
+                title: "Statut de Réservation",
+                subject: `[Les mains de Clem] Statut de votre réservation #${testBooking.id}`,
+                template: `Bonjour ${testBooking.client.prenom},
+
+Votre réservation du ${new Date(testBooking.date).toLocaleDateString('fr-FR')} à ${testBooking.time} 
+pour "${testBooking.serviceName}" a été confirmée.
+
+Je vous attends à l'adresse suivante :
+${testBooking.client.adresse}
+
+Cordialement,
+Clément - Les mains de Clem
+dremk34@gmail.com`,
+                variables: [
+                    "${booking.client.prenom}",
+                    "${booking.serviceName}",
+                    "${booking.date}",
+                    "${booking.time}",
+                    "${booking.client.adresse}",
+                    "${booking.id}"
+                ]
+            },
+            reschedule: {
+                title: "Modification de Créneau",
+                subject: `[Les mains de Clem] Modification de votre réservation #${testBooking.id}`,
+                template: `Bonjour ${testBooking.client.prenom},
+
+Votre rendez-vous a été déplacé :
+- Ancienne date : 14:00-15:00
+- Nouvelle date : ${testBooking.time}
+
+Merci de me contacter si ce changement ne vous convient pas.
+
+Cordialement,
+Clément - Les mains de Clem
+dremk34@gmail.com`,
+                variables: [
+                    "${booking.client.prenom}",
+                    "${booking.time}",
+                    "${booking.id}"
+                ]
+            }
+        };
+
+        let currentEmailType = 'confirmation';
+        let originalContent = '';
+        let currentSubject = '';
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmailTemplate('confirmation');
+            setupEmailTypeCards();
+        });
+
+        function setupEmailTypeCards() {
+            const cards = document.querySelectorAll('.email-type-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Retirer la classe active de toutes les cartes
+                    cards.forEach(c => c.classList.remove('active'));
+                    // Ajouter la classe active à la carte cliquée
+                    this.classList.add('active');
+                    // Charger le template correspondant
+                    const type = this.getAttribute('data-type');
+                    loadEmailTemplate(type);
+                });
+            });
+        }
+
+        function loadEmailTemplate(type) {
+            currentEmailType = type;
+            const template = emailTemplates[type];
+            
+            // Utiliser le contenu modifié s'il existe, sinon le template original
+            const currentContent = template.modifiedContent || template.template;
+            const currentSubject = template.modifiedSubject || template.subject;
+            
+            // Mettre à jour l'interface
+            document.getElementById('preview-title').textContent = template.title;
+            document.getElementById('email-preview').textContent = currentContent;
+            document.getElementById('subject-input').value = currentSubject;
+            
+            // Mettre à jour les métadonnées
+            const metaElement = document.getElementById('email-meta');
+            metaElement.innerHTML = `
+                <div><strong>Expéditeur :</strong> dremk34@gmail.com</div>
+                <div><strong>Sujet :</strong> ${currentSubject}</div>
+                <div><strong>Destinataire :</strong> ${testBooking.client.email}</div>
+            `;
+            
+            // Mettre à jour les variables
+            const variablesList = document.getElementById('variables-list');
+            variablesList.innerHTML = template.variables.map(variable => 
+                `<div class="variable-item">${variable}</div>`
+            ).join('');
+            
+            // Mettre à jour les données de test
+            const testDataElement = document.getElementById('test-data');
+            testDataElement.innerHTML = `
+                <div><strong>Prénom :</strong> ${testBooking.client.prenom}</div>
+                <div><strong>Service :</strong> ${testBooking.serviceName}</div>
+                <div><strong>Date :</strong> ${testBooking.date}</div>
+                <div><strong>Heure :</strong> ${testBooking.time}</div>
+                <div><strong>Prix :</strong> ${testBooking.price}€</div>
+            `;
+            
+            // Sauvegarder le contenu actuel
+            originalContent = currentContent;
+        }
+
+        function toggleEditor() {
+            const editor = document.getElementById('email-editor');
+            const preview = document.getElementById('email-preview');
+            
+            if (editor.classList.contains('hidden')) {
+                // Ouvrir l'éditeur
+                editor.classList.remove('hidden');
+                preview.style.display = 'none';
+                document.getElementById('email-content').value = originalContent;
+            } else {
+                // Fermer l'éditeur
+                editor.classList.add('hidden');
+                preview.style.display = 'block';
+            }
+        }
+
+        function saveChanges() {
+            const newContent = document.getElementById('email-content').value;
+            originalContent = newContent;
+            document.getElementById('email-preview').textContent = newContent;
+            
+            // Sauvegarder les modifications dans l'objet template
+            emailTemplates[currentEmailType].modifiedContent = newContent;
+            
+            toggleEditor();
+            
+            alert('✅ Modifications sauvegardées ! Les modifications sont maintenant conservées.');
+        }
+
+        function testEmail() {
+            const template = emailTemplates[currentEmailType];
+            const currentSubject = template.modifiedSubject || template.subject;
+            const subject = encodeURIComponent(currentSubject);
+            const body = encodeURIComponent(originalContent);
+            
+            window.open(`mailto:${testBooking.client.email}?from=dremk34@gmail.com&subject=${subject}&body=${body}`);
+            
+            alert('📧 Client email ouvert avec le contenu pré-rempli !');
+        }
+
+        function copyToClipboard() {
+            const content = originalContent;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('✅ Contenu copié dans le presse-papier !');
+            }).catch(err => {
+                console.error('Erreur lors de la copie :', err);
+                alert('❌ Erreur lors de la copie');
+            });
+        }
+
+        function updateSubject() {
+            const newSubject = document.getElementById('subject-input').value;
+            const metaElement = document.getElementById('email-meta');
+            const subjectDiv = metaElement.querySelector('div:nth-child(2)');
+            subjectDiv.innerHTML = `<strong>Sujet :</strong> ${newSubject}`;
+            
+            // Sauvegarder le sujet modifié dans l'objet template
+            emailTemplates[currentEmailType].modifiedSubject = newSubject;
+            
+            alert('✅ Sujet mis à jour ! Les modifications sont maintenant conservées.');
+        }
+
+        function generateCode() {
+            const template = emailTemplates[currentEmailType];
+            const subject = document.getElementById('subject-input').value;
+            const body = originalContent;
+            
+            let code = '';
+            
+            if (currentEmailType === 'confirmation') {
+                code = `// Code pour booking.js - Fonction sendAutomaticEmail()
+const subject = encodeURIComponent(\`${subject}\`);
+const body = encodeURIComponent(\`${body}\`);
+
+// Ouvrir le client email par défaut
+window.open(\`mailto:\${booking.client.email}?from=dremk34@gmail.com&subject=\${subject}&body=\${body}\`);`;
+            } else if (currentEmailType === 'status') {
+                code = `// Code pour admin.js - Fonction sendStatusEmail()
+const subject = encodeURIComponent(\`${subject}\`);
+const body = encodeURIComponent(\`${body}\`);
+
+// Ouvrir le client email par défaut
+window.open(\`mailto:\${booking.client.email}?from=dremk34@gmail.com&subject=\${subject}&body=\${body}\`);`;
+            } else if (currentEmailType === 'reschedule') {
+                code = `// Code pour admin.js - Fonction sendRescheduleEmail()
+const subject = encodeURIComponent(\`${subject}\`);
+const body = encodeURIComponent(\`${body}\`);
+
+// Ouvrir le client email par défaut
+window.open(\`mailto:\${booking.client.email}?from=dremk34@gmail.com&subject=\${subject}&body=\${body}\`);`;
+            }
+            
+            // Créer ou mettre à jour la section de code
+            let codeOutput = document.querySelector('.code-output');
+            if (!codeOutput) {
+                codeOutput = document.createElement('div');
+                codeOutput.className = 'code-output';
+                
+                const codeHeader = document.createElement('div');
+                codeHeader.className = 'code-header';
+                codeHeader.innerHTML = `
+                    <h3>Code JavaScript généré</h3>
+                    <button class="btn btn-success" onclick="copyCode()">
+                        <span>📋</span> Copier le code
+                    </button>
+                `;
+                
+                codeOutput.appendChild(codeHeader);
+                const codeContent = document.createElement('div');
+                codeContent.id = 'code-content';
+                codeOutput.appendChild(codeContent);
+                
+                document.querySelector('.preview-section').appendChild(codeOutput);
+            }
+            
+            document.getElementById('code-content').textContent = code;
+            
+            alert('💻 Code JavaScript généré ! Copiez-le dans votre fichier correspondant.');
+        }
+
+        function copyCode() {
+            const codeContent = document.getElementById('code-content');
+            const code = codeContent.textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Code copié dans le presse-papier !');
+            }).catch(err => {
+                console.error('Erreur lors de la copie du code :', err);
+                alert('❌ Erreur lors de la copie du code');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Massage bien-être à l'Île de la Réunion. Reconnectez votre corps et votre esprit au rythme des vagues.">
+    <meta name="keywords" content="massage, bien-être, Réunion, relaxation, massage réunionnais, huiles essentielles">
+    <title>Massage Bien-Être | Île de la Réunion</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/massages-compact.css">
+    <link rel="stylesheet" href="css/booking.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-logo">
+                <span>Les mains de Clem</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="#massages" class="nav-link">Nos Massages</a></li>
+                <li><a href="#reservation" class="nav-link">Réservation</a></li>
+                <li><a href="#experience" class="nav-link">Expérience</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#apropos" class="nav-link">À Propos</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Section 1: Hero / Accueil -->
+    <section id="accueil" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="assets/images/logo_clem.png" alt="Zen Réunion - Massage Bien-Être" class="hero-logo">
+            </div>
+            <p class="hero-subtitle">Reconnectez votre corps et votre esprit au rythme des vagues</p>
+            <a href="booking.html" class="btn btn-primary">Réserver ma séance</a>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Section 2: Nos Massages -->
+    <section id="massages" class="section massages-section-compact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nos Massages</h2>
+                <p class="section-subtitle">Choisissez votre moment de détente</p>
+            </div>
+
+            <div class="massages-grid">
+                <!-- Massage Card 1 -->
+                <div class="massage-card" data-service="massage-relaxant">
+                    <span class="massage-badge popular">Populaire</span>
+                    <div class="massage-card-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 class="massage-card-title">Massage Relaxant</h3>
+                    <p class="massage-card-description">Détente absolue avec huiles essentielles locales</p>
+                    <div class="massage-card-meta">
+                        <span class="massage-duration"><i class="far fa-clock"></i> 60 min</span>
+                        <span class="massage-price">55€</span>
+                    </div>
+                    <button class="btn-reserve" onclick="scrollToBooking('massage-relaxant')">
+                        Réserver
+                    </button>
+                </div>
+
+                <!-- Massage Card 2 -->
+                <div class="massage-card" data-service="massage-sportif">
+                    <div class="massage-card-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3 class="massage-card-title">Massage Sportif</h3>
+                    <p class="massage-card-description">Soulage les tensions musculaires profondes</p>
+                    <div class="massage-card-meta">
+                        <span class="massage-duration"><i class="far fa-clock"></i> 75 min</span>
+                        <span class="massage-price">70€</span>
+                    </div>
+                    <button class="btn-reserve" onclick="scrollToBooking('massage-sportif')">
+                        Réserver
+                    </button>
+                </div>
+
+                <!-- Massage Card 3 -->
+                <div class="massage-card" data-service="massage-huiles">
+                    <span class="massage-badge signature">Signature</span>
+                    <div class="massage-card-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="massage-card-title">Massage aux Huiles Tropicales</h3>
+                    <p class="massage-card-description">Coco, ylang-ylang et géranium bourbon</p>
+                    <div class="massage-card-meta">
+                        <span class="massage-duration"><i class="far fa-clock"></i> 90 min</span>
+                        <span class="massage-price">85€</span>
+                    </div>
+                    <button class="btn-reserve" onclick="scrollToBooking('massage-huiles')">
+                        Réserver
+                    </button>
+                </div>
+
+                <!-- Massage Card 4 -->
+                <div class="massage-card" data-service="massage-duo">
+                    <div class="massage-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="massage-card-title">Massage en Duo</h3>
+                    <p class="massage-card-description">Moment de relaxation à deux</p>
+                    <div class="massage-card-meta">
+                        <span class="massage-duration"><i class="far fa-clock"></i> 60 min</span>
+                        <span class="massage-price">100€</span>
+                    </div>
+                    <button class="btn-reserve" onclick="scrollToBooking('massage-duo')">
+                        Réserver
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Réservation & Paiement -->
+    <section id="reservation" class="section reservation-section-booking">
+        <div class="container-booking">
+            <div class="section-header">
+                <h2 class="section-title">Réserver votre séance</h2>
+                <p class="section-subtitle">Sélectionnez une date et un créneau en quelques clics</p>
+            </div>
+
+            <div class="booking-container">
+                <!-- Côté gauche : Sélection Date & Heure -->
+                <div class="booking-left">
+                    <!-- Sélection du Service -->
+                    <div class="service-selector">
+                        <label>Type de massage</label>
+                        <div class="service-buttons">
+                            <button type="button" class="service-btn" data-service="massage-relaxant" data-price="55" data-duration="60">
+                                <div class="service-btn-icon">
+                                    <i class="fas fa-spa"></i>
+                                </div>
+                                <div class="service-btn-content">
+                                    <span class="service-btn-name">Massage Relaxant</span>
+                                    <span class="service-btn-meta">60 min • 55€</span>
+                                </div>
+                            </button>
+
+                            <button type="button" class="service-btn" data-service="massage-sportif" data-price="70" data-duration="75">
+                                <div class="service-btn-icon">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div class="service-btn-content">
+                                    <span class="service-btn-name">Massage Sportif</span>
+                                    <span class="service-btn-meta">75 min • 70€</span>
+                                </div>
+                            </button>
+
+                            <button type="button" class="service-btn" data-service="massage-huiles" data-price="85" data-duration="90">
+                                <div class="service-btn-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="service-btn-content">
+                                    <span class="service-btn-name">Massage aux Huiles Tropicales</span>
+                                    <span class="service-btn-meta">90 min • 85€</span>
+                                </div>
+                            </button>
+
+                            <button type="button" class="service-btn" data-service="massage-duo" data-price="100" data-duration="60">
+                                <div class="service-btn-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="service-btn-content">
+                                    <span class="service-btn-name">Massage en Duo</span>
+                                    <span class="service-btn-meta">60 min • 100€</span>
+                                </div>
+                            </button>
+                        </div>
+                        <!-- Hidden input pour compatibilité JS -->
+                        <input type="hidden" id="service-select" value="">
+                    </div>
+
+                    <!-- Container Calendrier + Créneaux -->
+                    <div class="calendar-timeslots-container" id="calendar-timeslots-container">
+                        <!-- Calendrier -->
+                        <div class="calendar-wrapper">
+                            <div class="calendar-header">
+                                <button class="calendar-nav-btn" id="prev-month">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h2 id="current-month">Novembre 2024</h2>
+                                <button class="calendar-nav-btn" id="next-month">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                            <div class="calendar-weekdays">
+                                <div class="weekday">Lun</div>
+                                <div class="weekday">Mar</div>
+                                <div class="weekday">Mer</div>
+                                <div class="weekday">Jeu</div>
+                                <div class="weekday">Ven</div>
+                                <div class="weekday">Sam</div>
+                                <div class="weekday">Dim</div>
+                            </div>
+
+                            <div class="calendar-days" id="calendar-days">
+                                <!-- Les jours seront générés par JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Créneaux Horaires -->
+                        <div class="time-slots-wrapper">
+                            <h3 class="time-slots-title">Créneaux disponibles</h3>
+                            <div class="time-slots" id="time-slots">
+                                <p class="no-slots-message">Sélectionnez une date pour voir les créneaux disponibles</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informations Client -->
+                    <div class="client-info-wrapper" id="client-info-section" style="display: none;">
+                        <h3>Vos informations</h3>
+                        <form id="client-info-form" class="client-form">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="prenom">Prénom *</label>
+                                    <input type="text" id="prenom" required placeholder="Votre prénom">
+                                </div>
+                                <div class="form-field">
+                                    <label for="nom">Nom *</label>
+                                    <input type="text" id="nom" required placeholder="Votre nom">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" required placeholder="votre.email@exemple.com">
+                                </div>
+                                <div class="form-field">
+                                    <label for="telephone">Téléphone *</label>
+                                    <input type="tel" id="telephone" required placeholder="+262 692 XX XX XX">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="adresse">Adresse de la prestation *</label>
+                                <input type="text" id="adresse" required 
+                                       placeholder="Adresse précise où nous intervenir (ex: 12 Rue des Palmiers, Saint-Denis)">
+                            </div>
+
+                            <div class="form-field">
+                                <label for="message">Message (optionnel)</label>
+                                <textarea id="message" rows="3" placeholder="Des besoins particuliers ?"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Côté droit : Résumé de la réservation -->
+                <div class="booking-right">
+                    <div class="booking-summary-card">
+                        <div class="summary-header">
+                            <h3>Résumé de la réservation</h3>
+                        </div>
+
+                        <!-- Service sélectionné -->
+                        <div class="service-preview" id="service-preview" style="display: none;">
+                            <img src="" alt="Service" id="service-image" class="service-img">
+                            <div class="service-details">
+                                <h4 id="service-name">Massage Relaxant</h4>
+                                <p id="service-duration">60 minutes</p>
+                                <p class="service-price" id="service-price">55€</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-placeholder" id="summary-placeholder">
+                            <i class="fas fa-calendar-check"></i>
+                            <p>Sélectionnez un massage, une date et une heure pour continuer</p>
+                        </div>
+
+                        <!-- Détails de la réservation -->
+                        <div class="booking-details" id="booking-details" style="display: none;">
+                            <div class="detail-item">
+                                <i class="far fa-calendar"></i>
+                                <div>
+                                    <span class="detail-label">Date</span>
+                                    <span class="detail-value" id="selected-date">-</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="far fa-clock"></i>
+                                <div>
+                                    <span class="detail-label">Heure</span>
+                                    <span class="detail-value" id="selected-time">-</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="far fa-hourglass"></i>
+                                <div>
+                                    <span class="detail-label">Durée</span>
+                                    <span class="detail-value" id="summary-duration">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="summary-total" id="summary-total" style="display: none;">
+                            <div class="total-row">
+                                <span>Total</span>
+                                <span class="total-price" id="total-price">55€</span>
+                            </div>
+                        </div>
+
+                        <!-- Bouton de réservation -->
+                        <button class="btn-continue" id="btn-continue" disabled>
+                            <i class="fas fa-calendar-check"></i> Je réserve
+                        </button>
+
+                        <!-- Note de sécurité -->
+                        <p class="security-note">
+                            <i class="fas fa-shield-alt"></i>
+                            Paiement 100% sécurisé via Stripe
+                        </p>
+                    </div>
+
+                    <!-- Avantages -->
+                    <div class="benefits-card">
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Confirmation immédiate</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Annulation gratuite 24h avant</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Produits bio et locaux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmation -->
+        <div class="modal" id="confirmation-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Réservation en attente de validation</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Votre demande de réservation a bien été enregistrée !</p>
+                    <p>Vous recevrez un email de confirmation une fois que nous aurons validé votre créneau.</p>
+
+                    <div class="modal-details">
+                        <div class="modal-detail-item">
+                            <strong>Service :</strong>
+                            <span id="modal-service">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <strong>Date :</strong>
+                            <span id="modal-date">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <strong>Heure :</strong>
+                            <span id="modal-time">-</span>
+                        </div>
+                        <div class="modal-detail-item">
+                            <strong>Email de confirmation envoyé à :</strong>
+                            <span id="modal-email">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-modal-close" id="btn-modal-close">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: L'expérience Réunionnaise -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <div class="experience-content">
+                <div class="experience-text">
+                    <h2 class="section-title">L'Expérience Réunionnaise</h2>
+                    <p class="experience-intro">Au cœur de l'océan Indien, notre approche du massage puise dans la richesse naturelle de l'île intense.</p>
+
+                    <div class="experience-features">
+                        <div class="feature-item">
+                            <i class="fas fa-leaf"></i>
+                            <div class="feature-content">
+                                <h3>Produits Locaux</h3>
+                                <p>Huiles essentielles de géranium bourbon, ylang-ylang, et noix de coco bio cultivés sur l'île.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="fas fa-mountain"></i>
+                            <div class="feature-content">
+                                <h3>Environnement Naturel</h3>
+                                <p>Un cadre zen inspiré des cirques et du lagon, pour une reconnexion totale.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="fas fa-heart"></i>
+                            <div class="feature-content">
+                                <h3>Savoir-Faire Authentique</h3>
+                                <p>Des techniques ancestrales mêlées aux méthodes modernes de relaxation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="experience-gallery">
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="assets/images/gallery-1.jpg" alt="Nature réunionnaise" loading="lazy">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="assets/images/gallery-2.jpg" alt="Produits locaux" loading="lazy">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="assets/images/gallery-3.jpg" alt="Ambiance zen" loading="lazy">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="assets/images/gallery-4.jpg" alt="Massage en extérieur" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Contact & Localisation -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nous Contacter</h2>
+                <p class="section-subtitle">Trouvez-nous au cœur de l'île intense</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-details">
+                            <h3>Adresse</h3>
+                            <p>32 Chem. Maurice Thorez<br>97410 Saint-Pierre<br>La Réunion</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-details">
+                            <h3>Téléphone</h3>
+                            <p><a href="tel:+262692123456">+262 692 12 34 56</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p><a href="mailto:contact@zenreunion.re">contact@zenreunion.re</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="contact-details">
+                            <h3>Horaires</h3>
+                            <p>Lundi - Samedi : 9h00 - 19h00<br>Dimanche : Sur rendez-vous</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+
+                <div class="contact-map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59590.05913731931!2d55.46877194869937!3d-21.276274426004075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDE2JzM0LjYiUyA1NcKwMjgnMTUuNiJF!5e0!3m2!1sfr!2sre!4v1234567890"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Localisation de Zen Réunion - 32 Chem. Maurice Thorez, Saint-Pierre, La Réunion">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: À Propos -->
+    <section id="apropos" class="section apropos-section">
+        <div class="container">
+            <div class="apropos-content">
+                <div class="apropos-image">
+                    <img src="assets/images/praticien.jpg" alt="Notre équipe" loading="lazy">
+                </div>
+                <div class="apropos-text">
+                    <h2 class="section-title">Notre Philosophie</h2>
+                    <p class="apropos-intro">Née au cœur de l'océan Indien, notre pratique du massage est un hommage à la beauté naturelle de La Réunion.</p>
+
+                    <p>Depuis plus de 10 ans, nous accompagnons nos clients dans leur quête de bien-être et de reconnexion. Chaque séance est un voyage sensoriel où se mêlent les senteurs de l'île, le rythme apaisant des vagues et la chaleur humaine.</p>
+
+                    <blockquote class="apropos-quote">
+                        "Lâchez prise, ici le temps s'arrête."
+                    </blockquote>
+
+                    <p>Notre engagement : utiliser uniquement des produits naturels et locaux, respecter votre corps et votre rythme, et créer un espace de paix où vous pouvez enfin vous retrouver.</p>
+
+                    <div class="apropos-certifications">
+                        <div class="certification-badge">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certifié Bio</span>
+                        </div>
+                        <div class="certification-badge">
+                            <i class="fas fa-award"></i>
+                            <span>10+ ans d'expérience</span>
+                        </div>
+                        <div class="certification-badge">
+                            <i class="fas fa-heart"></i>
+                            <span>100% Local</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Zen Réunion</h3>
+                    <p>Votre havre de paix à l'Île de la Réunion</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#massages">Nos Massages</a></li>
+                        <li><a href="#reservation">Réserver</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Suivez-nous</h4>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Zen Réunion. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/email-server.js"></script>
+    <script src="js/booking.js"></script>
+    <script src="js/integration.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

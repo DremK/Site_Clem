@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation - Zen Réunion</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/booking.css">
+</head>
+<body>
+
+    <!-- Navigation Simple -->
+    <nav class="booking-nav">
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Retour au site
+            </a>
+            <div class="nav-logo">
+                <i class="fas fa-spa"></i>
+                <span>Zen Réunion</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page de Réservation -->
+    <main class="booking-main">
+        <div class="booking-container">
+
+            <!-- Côté gauche : Sélection Date & Heure -->
+            <div class="booking-left">
+                <div class="booking-header">
+                    <h1>Sélectionnez une Date & Heure</h1>
+                    <p>Choisissez le créneau qui vous convient</p>
+                </div>
+
+                <!-- Sélection du Service -->
+                <div class="service-selector">
+                    <label for="service-select">Type de massage</label>
+                    <select id="service-select" class="service-dropdown">
+                        <option value="">Sélectionnez un massage</option>
+                        <option value="massage-relaxant" data-price="55" data-duration="60" data-image="assets/images/massage-relaxant.jpg">Massage Relaxant</option>
+                        <option value="massage-sportif" data-price="70" data-duration="75" data-image="assets/images/massage-sportif.jpg">Massage Sportif</option>
+                        <option value="massage-huiles" data-price="85" data-duration="90" data-image="assets/images/massage-huiles.jpg">Massage aux Huiles Tropicales</option>
+                        <option value="massage-duo" data-price="100" data-duration="60" data-image="assets/images/massage-duo.jpg">Massage en Duo</option>
+                    </select>
+                </div>
+
+                <!-- Container Calendrier + Créneaux -->
+                <div class="calendar-timeslots-container" id="calendar-timeslots-container">
+                    <!-- Calendrier -->
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header">
+                            <button class="calendar-nav-btn" id="prev-month">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h2 id="current-month">Novembre 2024</h2>
+                            <button class="calendar-nav-btn" id="next-month">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="calendar-weekdays">
+                            <div class="weekday">Lun</div>
+                            <div class="weekday">Mar</div>
+                            <div class="weekday">Mer</div>
+                            <div class="weekday">Jeu</div>
+                            <div class="weekday">Ven</div>
+                            <div class="weekday">Sam</div>
+                            <div class="weekday">Dim</div>
+                        </div>
+
+                        <div class="calendar-days" id="calendar-days">
+                            <!-- Les jours seront générés par JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Créneaux Horaires -->
+                    <div class="time-slots-wrapper">
+                        <h3 class="time-slots-title">Créneaux disponibles</h3>
+                        <div class="time-slots" id="time-slots">
+                            <!-- Les créneaux seront générés par JavaScript -->
+                            <p class="no-slots-message">Sélectionnez une date pour voir les créneaux disponibles</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations Client -->
+                <div class="client-info-wrapper" id="client-info-section" style="display: none;">
+                    <h3>Vos informations</h3>
+                    <form id="client-info-form" class="client-form">
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="prenom">Prénom *</label>
+                                <input type="text" id="prenom" required placeholder="Votre prénom">
+                            </div>
+                            <div class="form-field">
+                                <label for="nom">Nom *</label>
+                                <input type="text" id="nom" required placeholder="Votre nom">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" required placeholder="votre.email@exemple.com">
+                            </div>
+                            <div class="form-field">
+                                <label for="telephone">Téléphone *</label>
+                                <input type="tel" id="telephone" required placeholder="+262 692 XX XX XX">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="adresse">Adresse de la prestation *</label>
+                            <input type="text" id="adresse" required 
+                                   placeholder="Adresse précise où nous intervenir (ex: 12 Rue des Palmiers, Saint-Denis)">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="message">Message (optionnel)</label>
+                            <textarea id="message" rows="3" placeholder="Des besoins particuliers ?"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Côté droit : Résumé de la réservation -->
+            <div class="booking-right">
+                <div class="booking-summary-card">
+                    <div class="summary-header">
+                        <h3>Résumé de la réservation</h3>
+                    </div>
+
+                    <!-- Service sélectionné -->
+                    <div class="service-preview" id="service-preview" style="display: none;">
+                        <img src="" alt="Service" id="service-image" class="service-img">
+                        <div class="service-details">
+                            <h4 id="service-name">Massage Relaxant</h4>
+                            <p id="service-duration">60 minutes</p>
+                            <p class="service-price" id="service-price">55€</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-placeholder" id="summary-placeholder">
+                        <i class="fas fa-calendar-check"></i>
+                        <p>Sélectionnez un massage, une date et une heure pour continuer</p>
+                    </div>
+
+                    <!-- Détails de la réservation -->
+                    <div class="booking-details" id="booking-details" style="display: none;">
+                        <div class="detail-item">
+                            <i class="far fa-calendar"></i>
+                            <div>
+                                <span class="detail-label">Date</span>
+                                <span class="detail-value" id="selected-date">-</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="far fa-clock"></i>
+                            <div>
+                                <span class="detail-label">Heure</span>
+                                <span class="detail-value" id="selected-time">-</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="far fa-hourglass"></i>
+                            <div>
+                                <span class="detail-label">Durée</span>
+                                <span class="detail-value" id="summary-duration">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="summary-total" id="summary-total" style="display: none;">
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-price" id="total-price">55€</span>
+                        </div>
+                    </div>
+
+                    <!-- Bouton de réservation -->
+                    <button class="btn-continue" id="btn-continue" disabled>
+                        <i class="fas fa-calendar-check"></i> Je réserve
+                    </button>
+
+                    <!-- Note de sécurité -->
+                    <p class="security-note">
+                        <i class="fas fa-shield-alt"></i>
+                        Paiement 100% sécurisé via Stripe
+                    </p>
+                </div>
+
+                <!-- Avantages -->
+                <div class="benefits-card">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Confirmation immédiate</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Annulation gratuite 24h avant</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Produits bio et locaux</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal de confirmation -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Réservation en attente de validation</h2>
+            </div>
+            <div class="modal-body">
+                <p>Votre demande de réservation a bien été enregistrée !</p>
+                <p>Vous recevrez un email de confirmation une fois que nous aurons validé votre créneau.</p>
+
+                <div class="modal-details">
+                    <div class="modal-detail-item">
+                        <strong>Service :</strong>
+                        <span id="modal-service">-</span>
+                    </div>
+                    <div class="modal-detail-item">
+                        <strong>Date :</strong>
+                        <span id="modal-date">-</span>
+                    </div>
+                    <div class="modal-detail-item">
+                        <strong>Heure :</strong>
+                        <span id="modal-time">-</span>
+                    </div>
+                    <div class="modal-detail-item">
+                        <strong>Email de confirmation envoyé à :</strong>
+                        <span id="modal-email">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-close" id="btn-modal-close">Retour à l'accueil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/email-server.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>
