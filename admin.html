@@ -30,6 +30,21 @@
             box-sizing: border-box;
         }
 
+        /* Accessibility: Focus styles for keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--light);
@@ -1878,6 +1893,25 @@
                 transform: none;
             }
         }
+
+        /* ======================================== */
+        /* ACCESSIBILITY - REDUCED MOTION SUPPORT */
+        /* ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .modal-content,
+            .edit-panel {
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1897,21 +1931,21 @@
             </div>
             <div class="header-actions">
                 <div class="action-group">
-                    <button class="btn btn-sm btn-secondary" onclick="refreshData()" title="Actualiser">
+                    <button class="btn btn-sm btn-secondary" onclick="refreshData()" title="Actualiser" aria-label="Actualiser les données">
                         <i class="fas fa-sync-alt"></i>
                     </button>
-                    <button class="btn btn-sm btn-warning" onclick="clearOldBookings()" title="Nettoyer anciennes">
+                    <button class="btn btn-sm btn-warning" onclick="clearOldBookings()" title="Nettoyer anciennes" aria-label="Nettoyer les anciennes réservations">
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="clearAllBookings()" title="Tout supprimer">
+                    <button class="btn btn-sm btn-danger" onclick="clearAllBookings()" title="Tout supprimer" aria-label="Supprimer toutes les réservations">
                         <i class="fas fa-broom"></i>
                     </button>
                 </div>
                 <div class="action-group">
-                    <a href="email-preview.html" class="btn btn-sm btn-primary" target="_blank" title="Prévisualiser Emails">
+                    <a href="email-preview.html" class="btn btn-sm btn-primary" target="_blank" title="Prévisualiser Emails" aria-label="Prévisualiser les emails">
                         <i class="fas fa-envelope"></i>
                     </a>
-                    <a href="index.html" class="btn btn-sm btn-primary" title="Retour au site">
+                    <a href="index.html" class="btn btn-sm btn-primary" title="Retour au site" aria-label="Retourner au site principal">
                         <i class="fas fa-home"></i>
                     </a>
                 </div>
@@ -1935,9 +1969,9 @@
         
         <div class="calendar-wrapper">
             <div class="calendar-header">
-                <button class="btn btn-icon" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="btn btn-icon" onclick="changeMonth(-1)" aria-label="Mois précédent"><i class="fas fa-chevron-left"></i></button>
                 <h3 id="current-month"></h3>
-                <button class="btn btn-icon" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                <button class="btn btn-icon" onclick="changeMonth(1)" aria-label="Mois suivant"><i class="fas fa-chevron-right"></i></button>
             </div>
             
             <div class="calendar-weekdays">
