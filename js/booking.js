@@ -523,6 +523,10 @@ function updateSummary() {
 // ========================================
 // GESTION DE LA RÉSERVATION
 // ========================================
+/**
+ * Gère le bouton "Je réserve" et valide le formulaire
+ * Affiche des messages d'erreur visuels pour guider l'utilisateur
+ */
 function handleContinue() {
     // Vérifier qu'un service est sélectionné (validation au moment de la réservation)
     if (!bookingState.selectedService) {
@@ -541,9 +545,11 @@ function handleContinue() {
 
     // Nettoyer les erreurs précédentes
     Object.values(fields).forEach(field => {
-        field.classList.remove('error');
-        const errorMsg = field.parentElement.querySelector('.field-error');
-        if (errorMsg) errorMsg.remove();
+        if (field) {
+            field.classList.remove('error');
+            const errorMsg = field.parentElement.querySelector('.field-error');
+            if (errorMsg) errorMsg.remove();
+        }
     });
 
     let hasError = false;
@@ -551,6 +557,7 @@ function handleContinue() {
 
     // Valider chaque champ
     Object.entries(fields).forEach(([key, field]) => {
+        if (!field) return; // Skip if field not found
         if (!field.value.trim()) {
             showFieldError(field, 'Ce champ est obligatoire');
             hasError = true;
@@ -559,24 +566,30 @@ function handleContinue() {
     });
 
     // Validation email spécifique
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (fields.email.value.trim() && !emailRegex.test(fields.email.value.trim())) {
-        showFieldError(fields.email, 'Veuillez entrer une adresse email valide');
-        hasError = true;
-        if (!firstErrorField) firstErrorField = fields.email;
+    if (fields.email && fields.email.value.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(fields.email.value.trim())) {
+            showFieldError(fields.email, 'Veuillez entrer une adresse email valide');
+            hasError = true;
+            if (!firstErrorField) firstErrorField = fields.email;
+        }
     }
 
     // Validation téléphone (format français/réunionnais)
-    const phoneRegex = /^(\+262|0)[0-9]{9}$/;
-    if (fields.telephone.value.trim() && !phoneRegex.test(fields.telephone.value.trim().replace(/\s/g, ''))) {
-        showFieldError(fields.telephone, 'Format attendu: +262 692 XX XX XX ou 0692 XX XX XX');
-        hasError = true;
-        if (!firstErrorField) firstErrorField = fields.telephone;
+    if (fields.telephone && fields.telephone.value.trim()) {
+        const phoneRegex = /^(\+262|0)[0-9]{9}$/;
+        if (!phoneRegex.test(fields.telephone.value.trim().replace(/\s/g, ''))) {
+            showFieldError(fields.telephone, 'Format attendu: +262 692 XX XX XX ou 0692 XX XX XX');
+            hasError = true;
+            if (!firstErrorField) firstErrorField = fields.telephone;
+        }
     }
 
     if (hasError) {
-        firstErrorField.focus();
-        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (firstErrorField) {
+            firstErrorField.focus();
+            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
     }
 
@@ -587,7 +600,7 @@ function handleContinue() {
         email: fields.email.value.trim(),
         telephone: fields.telephone.value.trim(),
         adresse: fields.adresse.value.trim(),
-        message: document.getElementById('message').value.trim()
+        message: document.getElementById('message') ? document.getElementById('message').value.trim() : ''
     };
 
     // Procéder à la réservation
@@ -595,6 +608,11 @@ function handleContinue() {
 }
 
 // Fonction pour afficher une erreur sur un champ
+/**
+ * Affiche un message d'erreur sous un champ de formulaire
+ * @param {HTMLElement} field - Le champ de formulaire
+ * @param {string} message - Le message d'erreur à afficher
+ */
 function showFieldError(field, message) {
     field.classList.add('error');
     const errorDiv = document.createElement('div');
@@ -604,6 +622,11 @@ function showFieldError(field, message) {
 }
 
 // Fonction pour afficher une notification
+/**
+ * Affiche une notification temporaire en haut à droite de l'écran
+ * @param {string} message - Le message à afficher
+ * @param {string} type - Le type de notification: 'success', 'warning', ou 'info'
+ */
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -623,6 +646,10 @@ function showNotification(message, type = 'info') {
     }, 4000);
 }
 
+/**
+ * Traite la réservation en créant l'objet booking et en l'enregistrant
+ * Affiche un état de chargement pendant le traitement
+ */
 function processBooking() {
     const btnContinue = document.getElementById('btn-continue');
     const originalText = btnContinue.innerHTML;
