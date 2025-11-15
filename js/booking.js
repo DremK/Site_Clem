@@ -201,8 +201,15 @@ function handleServiceSelection() {
 function showServicePreview(service) {
     const preview = document.getElementById('service-preview');
     const placeholder = document.getElementById('summary-placeholder');
+    const serviceImage = document.getElementById('service-image');
 
-    document.getElementById('service-image').src = service.image;
+    // Handle missing images gracefully with error handler
+    serviceImage.onerror = function() {
+        this.style.display = 'none';
+    };
+    serviceImage.src = service.image;
+    serviceImage.alt = service.name;
+    
     document.getElementById('service-name').textContent = service.name;
     document.getElementById('service-duration').textContent = `${service.duration} minutes`;
     document.getElementById('service-price').textContent = `${service.price}€`;
@@ -516,71 +523,173 @@ function updateSummary() {
 // ========================================
 // GESTION DE LA RÉSERVATION
 // ========================================
+/**
+ * Gère le bouton "Je réserve" et valide le formulaire
+ * Affiche des messages d'erreur visuels pour guider l'utilisateur
+ */
 function handleContinue() {
     // Vérifier qu'un service est sélectionné (validation au moment de la réservation)
     if (!bookingState.selectedService) {
-        alert('Veuillez choisir un type de massage avant de procéder à la réservation');
+        showNotification('Veuillez choisir un type de massage avant de procéder à la réservation', 'warning');
         return;
     }
 
     // Valider le formulaire client
-    const prenom = document.getElementById('prenom').value.trim();
-    const nom = document.getElementById('nom').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const telephone = document.getElementById('telephone').value.trim();
-    const adresse = document.getElementById('adresse').value.trim();
+    const fields = {
+        prenom: document.getElementById('prenom'),
+        nom: document.getElementById('nom'),
+        email: document.getElementById('email'),
+        telephone: document.getElementById('telephone'),
+        adresse: document.getElementById('adresse')
+    };
 
-    if (!prenom || !nom || !email || !telephone || !adresse) {
-        alert('Veuillez remplir tous les champs obligatoires');
-        document.getElementById('client-info-section').scrollIntoView({ behavior: 'smooth' });
-        return;
+    // Nettoyer les erreurs précédentes
+    Object.values(fields).forEach(field => {
+        if (field) {
+            field.classList.remove('error');
+            const errorMsg = field.parentElement.querySelector('.field-error');
+            if (errorMsg) errorMsg.remove();
+        }
+    });
+
+    let hasError = false;
+    let firstErrorField = null;
+
+    // Valider chaque champ
+    Object.entries(fields).forEach(([key, field]) => {
+        if (!field) return; // Skip if field not found
+        if (!field.value.trim()) {
+            showFieldError(field, 'Ce champ est obligatoire');
+            hasError = true;
+            if (!firstErrorField) firstErrorField = field;
+        }
+    });
+
+    // Validation email spécifique
+    if (fields.email && fields.email.value.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(fields.email.value.trim())) {
+            showFieldError(fields.email, 'Veuillez entrer une adresse email valide');
+            hasError = true;
+            if (!firstErrorField) firstErrorField = fields.email;
+        }
     }
 
-    // Validation email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Veuillez entrer une adresse email valide');
+    // Validation téléphone (format français/réunionnais)
+    if (fields.telephone && fields.telephone.value.trim()) {
+        const phoneRegex = /^(\+262|0)[0-9]{9}$/;
+        if (!phoneRegex.test(fields.telephone.value.trim().replace(/\s/g, ''))) {
+            showFieldError(fields.telephone, 'Format attendu: +262 692 XX XX XX ou 0692 XX XX XX');
+            hasError = true;
+            if (!firstErrorField) firstErrorField = fields.telephone;
+        }
+    }
+
+    if (hasError) {
+        if (firstErrorField) {
+            firstErrorField.focus();
+            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
     }
 
     // Sauvegarder les infos client
     bookingState.clientInfo = {
-        prenom,
-        nom,
-        email,
-        telephone,
-        adresse,
-        message: document.getElementById('message').value.trim()
+        prenom: fields.prenom.value.trim(),
+        nom: fields.nom.value.trim(),
+        email: fields.email.value.trim(),
+        telephone: fields.telephone.value.trim(),
+        adresse: fields.adresse.value.trim(),
+        message: document.getElementById('message') ? document.getElementById('message').value.trim() : ''
     };
 
     // Procéder à la réservation
     processBooking();
 }
 
-function processBooking() {
-    const service = services[bookingState.selectedService];
+// Fonction pour afficher une erreur sur un champ
+/**
+ * Affiche un message d'erreur sous un champ de formulaire
+ * @param {HTMLElement} field - Le champ de formulaire
+ * @param {string} message - Le message d'erreur à afficher
+ */
+function showFieldError(field, message) {
+    field.classList.add('error');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    field.parentElement.appendChild(errorDiv);
+}
 
-    // Créer l'objet réservation avec le même format de date que l'admin
-    const dateKey = `${bookingState.selectedDate.getFullYear()}-${String(bookingState.selectedDate.getMonth() + 1).padStart(2, '0')}-${String(bookingState.selectedDate.getDate()).padStart(2, '0')}`;
+// Fonction pour afficher une notification
+/**
+ * Affiche une notification temporaire en haut à droite de l'écran
+ * @param {string} message - Le message à afficher
+ * @param {string} type - Le type de notification: 'success', 'warning', ou 'info'
+ */
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
     
-    const booking = {
-        id: Date.now(), // ID temporaire
-        service: bookingState.selectedService,
-        serviceName: service.name,
-        date: dateKey, // Utiliser le même format que l'admin pour éviter le décalage
-        time: bookingState.selectedTime,
-        price: service.price,
-        duration: service.duration,
-        client: bookingState.clientInfo,
-        status: 'pending', // En attente de validation
-        createdAt: new Date().toISOString()
-    };
+    // Animation d'entrée
+    setTimeout(() => notification.classList.add('show'), 10);
+    
+    // Retirer après 4 secondes
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
 
-    // Sauvegarder localement (à remplacer par appel API)
-    saveBooking(booking);
+/**
+ * Traite la réservation en créant l'objet booking et en l'enregistrant
+ * Affiche un état de chargement pendant le traitement
+ */
+function processBooking() {
+    const btnContinue = document.getElementById('btn-continue');
+    const originalText = btnContinue.innerHTML;
+    
+    // Show loading state
+    btnContinue.disabled = true;
+    btnContinue.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement en cours...';
+    
+    // Simulate processing delay for better UX
+    setTimeout(() => {
+        const service = services[bookingState.selectedService];
 
-    // Afficher la modal de confirmation
-    showConfirmationModal(booking);
+        // Créer l'objet réservation avec le même format de date que l'admin
+        const dateKey = `${bookingState.selectedDate.getFullYear()}-${String(bookingState.selectedDate.getMonth() + 1).padStart(2, '0')}-${String(bookingState.selectedDate.getDate()).padStart(2, '0')}`;
+        
+        const booking = {
+            id: Date.now(), // ID temporaire
+            service: bookingState.selectedService,
+            serviceName: service.name,
+            date: dateKey, // Utiliser le même format que l'admin pour éviter le décalage
+            time: bookingState.selectedTime,
+            price: service.price,
+            duration: service.duration,
+            client: bookingState.clientInfo,
+            status: 'pending', // En attente de validation
+            createdAt: new Date().toISOString()
+        };
+
+        // Sauvegarder localement (à remplacer par appel API)
+        saveBooking(booking);
+
+        // Restore button state
+        btnContinue.innerHTML = originalText;
+
+        // Afficher la modal de confirmation
+        showConfirmationModal(booking);
+        
+        // Show success notification
+        showNotification('Réservation enregistrée avec succès !', 'success');
+    }, 800);
 }
 
 function saveBooking(booking) {

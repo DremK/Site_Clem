@@ -10,10 +10,13 @@ const navLinks = document.querySelectorAll('.nav-link');
 // NAVIGATION MOBILE
 // ========================================
 navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+    const isActive = navMenu.classList.toggle('active');
     const icon = navToggle.querySelector('i');
     icon.classList.toggle('fa-bars');
     icon.classList.toggle('fa-times');
+    
+    // Accessibility: update aria-expanded
+    navToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
 });
 
 // Fermer le menu mobile au clic sur un lien
@@ -23,6 +26,9 @@ navLinks.forEach(link => {
         const icon = navToggle.querySelector('i');
         icon.classList.add('fa-bars');
         icon.classList.remove('fa-times');
+        
+        // Accessibility: update aria-expanded
+        navToggle.setAttribute('aria-expanded', 'false');
     });
 });
 
