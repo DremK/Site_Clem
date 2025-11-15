@@ -33,6 +33,21 @@
     box-sizing: border-box;
 }
 
+/* Accessibility: Focus styles */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 body {
     font-family: var(--font-main);
     background-color: var(--bg-light);
@@ -1249,6 +1264,28 @@ input, select, textarea {
 
     .calendar-day {
         font-size: 0.875rem;
+        min-height: 40px;
+    }
+
+    .calendar-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .weekday {
+        font-size: 0.75rem;
+        padding: 0.25rem;
+    }
+
+    .service-btn {
+        padding: 0.875rem;
+    }
+
+    .service-btn-name {
+        font-size: 0.95rem;
+    }
+
+    .service-btn-meta {
+        font-size: 0.875rem;
     }
 }
 
@@ -1299,5 +1336,86 @@ input, select, textarea {
 
     .slot-actions {
         gap: 0.5rem;
+    }
+}
+
+/* ========================================
+   FORM VALIDATION STYLES
+   ======================================== */
+.form-field input.error,
+.form-field textarea.error {
+    border-color: var(--danger);
+    background-color: rgba(245, 101, 101, 0.05);
+}
+
+.field-error {
+    color: var(--danger);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.field-error::before {
+    content: '⚠';
+    font-size: 1rem;
+}
+
+/* ========================================
+   NOTIFICATION STYLES
+   ======================================== */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+    max-width: 400px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-success {
+    border-left-color: var(--success);
+}
+
+.notification-success i {
+    color: var(--success);
+    font-size: 1.5rem;
+}
+
+.notification-warning {
+    border-left-color: #f59e0b;
+}
+
+.notification-warning i {
+    color: #f59e0b;
+    font-size: 1.5rem;
+}
+
+.notification-info i {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
     }
 }
